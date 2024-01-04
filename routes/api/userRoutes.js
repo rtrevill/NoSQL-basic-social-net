@@ -4,11 +4,13 @@ const {
     getUsers,
     getSingleUser,
     createUser,
+    deleteUser,
+    updateUser,
 } = require('../../controllers/userController.js');
 
 router.route('/').get(getUsers).post(createUser);
 
-router.route('/:userId').get(getSingleUser);
+router.route('/:userId').get(getSingleUser).delete(deleteUser).put(updateUser);
 // router.route('/', (req,res) => {
 //     res.send("What's Wrong?");
 // })
