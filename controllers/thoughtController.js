@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const Thought = require('../models/Thought');
 const User = require('../models/User');
 
@@ -5,16 +6,31 @@ module.exports = {
     async getThoughts(req,res) {
         try{
             const thoughts = await Thought.find();
-            res.json(thoughts);
+            res.status(200).json(thoughts);
         }catch(err) {
             res.status(500).json(err);
         }
     },
     async singleThought(req,res) {
         try{
-            const thought = await Thought.findOne({_id: req.params.thoughtId});
-            res.json(thought);
+            const thought = await Thought.findOne({_id: req.params.thoughtId})
+
+            if (!thought){
+                res.status(400).json({message: "Sorry that thought doesn't exist"});
+            }
+            else{
+            res.status(200).json({
+                _id: thought._id,
+                thoughtText: thought.thoughtText,
+                username: thought.username,
+                createdAt: `${thought.createdAt.toString()}`,
+                reactions: thought.reactions,
+                __v: thought.__v,
+                reactionCount: thought.reactionCount,
+                })
+            };
         }catch(err){
+            console.log(err);
             res.status(500).json(err);
         }
     },
@@ -26,14 +42,25 @@ module.exports = {
                     {username: req.body.username},
                     {$addToSet: {thoughts: result._id}},
                     {new:true});
-                res.json(updUser)})
+
+            if(!updUser){
+                await Thought.findByIdAndDelete(result._id)
+                return res.status(400).json({message: "This username is incorrect"})
+            }
+                res.status(200).json(updUser)
+        })
         } catch(err){
             res.status(500).json(err);
         }
     },
     async deleteThought(req,res) {
         try{
-            const delThought = await Thought.deleteOne({_id: req.params.thoughtId})
+            const delThought = await Thought.findByIdAndDelete(req.params.thoughtId);
+
+            if(!delThought){
+                return res.status(400).json({message: "This thought does not exist"})
+            }
+
             const updUser = await User.findOneAndUpdate({"thoughts": req.params.thoughtId}, 
                                                         { $pull: {
                                                             "thoughts": `${req.params.thoughtId}`
@@ -46,7 +73,11 @@ module.exports = {
     async modifyThought(req,res) {
         try{
             const changedThought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, {new:true})
-            res.json(changedThought);
+
+            if(!changedThought){
+                return res.status(400).json({message: "This thought does not exist"})
+            }
+            res.status(200).json(changedThought);
         }catch(err){
             res.status(500).json(err);
         }
