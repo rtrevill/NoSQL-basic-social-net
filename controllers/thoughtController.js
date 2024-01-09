@@ -55,7 +55,8 @@ module.exports = {
             const updUser = await User.findOneAndUpdate({"thoughts": req.params.thoughtId}, 
                                                         { $pull: {
                                                             "thoughts": `${req.params.thoughtId}`
-                                                        }});
+                                                        }},
+                                                        {new:true});
             res.json(updUser);
         }catch(err){
             res.status(500).json(err);

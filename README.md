@@ -15,7 +15,7 @@ This application will allow users to:
 This application is soleley designed for back-end, and may be tested by using Insomnia or Postman.
 
 ## Links
-A walkthrough video demonstrating the functionality of the application:
+A walkthrough video demonstrating the functionality of the application: https://drive.google.com/file/d/1lJloPIJyDFb63NfufCOEb50rMHJP-7AS/view
 
 The URL of the GitHub repository: https://github.com/rtrevill/NoSQL-basic-social-net
 
