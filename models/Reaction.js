@@ -1,11 +1,12 @@
 const { ObjectId } = require('bson');
-const { Schema } = require('mongoose');
+const { Schema, Mongoose, mongoose } = require('mongoose');
 
 const reactionSchema = new Schema(
     {
         reactionId: {
-            type: Schema.Types.ObjectId,
-            default: new ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
+            default: new mongoose.Types.ObjectId(),
+            auto: true,
         },
         reactionBody: {
             type: String,
@@ -18,7 +19,7 @@ const reactionSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: new Date().toString(),
+            default: Date.now,
         },
     }
 );
