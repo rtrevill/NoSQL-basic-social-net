@@ -12,7 +12,8 @@ const thoughtSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: new Date().toString(),
+            default: Date.now,
+            get: reformatted
         },
         username: {
             type: String,
@@ -23,6 +24,7 @@ const thoughtSchema = new Schema(
     {
         toJSON: {
             virtuals: true,
+            getters: true,
         },
         id: false,
     }
@@ -33,6 +35,10 @@ thoughtSchema
     .get(function() {
         return this.reactions.length;
     });
+
+function reformatted(createdAt){   
+    return createdAt.toString();
+}
 
 const Thought = model('thought', thoughtSchema);
 

@@ -1,5 +1,4 @@
-const { ObjectId } = require('bson');
-const { Schema, Mongoose, mongoose } = require('mongoose');
+const { Schema,  mongoose } = require('mongoose');
 
 const reactionSchema = new Schema(
     {
@@ -20,8 +19,19 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
+            get: reformattedDate
         },
+    },
+    {
+        toJSON: {
+            getters: true,
+        },
+        id: false,
     }
 );
+
+function reformattedDate(createdAt){
+    return createdAt.toString();
+};
 
 module.exports = reactionSchema;

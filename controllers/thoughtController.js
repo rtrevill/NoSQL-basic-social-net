@@ -1,4 +1,3 @@
-const { default: mongoose } = require('mongoose');
 const Thought = require('../models/Thought');
 const User = require('../models/User');
 
@@ -16,19 +15,11 @@ module.exports = {
             const thought = await Thought.findOne({_id: req.params.thoughtId})
 
             if (!thought){
-                res.status(400).json({message: "Sorry that thought doesn't exist"});
+                return res.status(400).json({message: "Sorry that thought doesn't exist"});
             }
-            else{
-            res.status(200).json({
-                _id: thought._id,
-                thoughtText: thought.thoughtText,
-                username: thought.username,
-                createdAt: `${thought.createdAt.toString()}`,
-                reactions: thought.reactions,
-                __v: thought.__v,
-                reactionCount: thought.reactionCount,
-                })
-            };
+            
+            res.status(200).json(thought);
+            
         }catch(err){
             console.log(err);
             res.status(500).json(err);
