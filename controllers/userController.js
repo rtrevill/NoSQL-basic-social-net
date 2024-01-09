@@ -17,7 +17,7 @@ module.exports = {
             .populate({path: 'friends', select: '-__v'});
 
             if (!user) {
-                return res.status(404).json({ message: 'No post with that ID' });
+                return res.status(400).json({ message: 'No post with that ID' });
               }      
             res.status(200).json(user);
         } catch(err) {

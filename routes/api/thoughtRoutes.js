@@ -19,9 +19,4 @@ router.route('/:thoughtId').get(singleThought).delete(deleteThought).put(modifyT
 
 router.route('/:thoughtId/reactions').post(newReaction).delete(delReaction);
 
-
-router.use('/', (req,res) => {
-    res.send('You made it!!')
-});
-
 module.exports = router;

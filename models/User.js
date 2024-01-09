@@ -1,6 +1,11 @@
 const { Schema, model } = require('mongoose');
 const {Thought} = require('./Thought');
 
+const validateEmail = (email)=>{
+    let check = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+    return check.test(email)
+};
+
 const userSchema = new Schema(
     {
         username: {
@@ -13,7 +18,7 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            validated: true,
+            validate: [validateEmail, 'Please fill a validated email address'],
         },
         thoughts: [
             {
@@ -43,6 +48,5 @@ userSchema
     });
 
 const User = model('user', userSchema);
-// const User = model('user', userSchema);
 
 module.exports = User;

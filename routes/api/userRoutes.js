@@ -16,19 +16,8 @@ const {
 router.route('/').get(getUsers).post(createUser);
 
 router.route('/:userId').get(getSingleUser).delete(deleteUser).put(updateUser);
-// router.route('/', (req,res) => {
-//     res.send("What's Wrong?");
-// })
+
 router.route('/:userId/friends/:friendId').post(makeFriend).delete(endFriend);
 
-router.route('/abc')
-    .get(function (req, res, next) {
-        console.log("GET request called");
-        res.send("abc successful");
-    });
-
-router.use('/', (req,res) => {
-    res.send("Whats Wrongy??");
-});
 
 module.exports = router;
